@@ -20,6 +20,11 @@ function repo() {
         request_url="https://github.com/search?q=${username}&type=users";
     fi
 
+    if [[ "$1" == "-r" && -n "$2" ]]; then
+        repository_name=$2
+        request_url="https://github.com/search?q=${repository_name}&type=repositories";
+    fi
+
     os_type=$(uname)
 
     case "$os_type" in
