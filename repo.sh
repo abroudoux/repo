@@ -10,6 +10,10 @@ function repo() {
         request_url="https://github.com/$username/$repo_name"
     fi
 
+    if [[ "$1" ]]; then
+        request_url="https://github.com/$1"
+    fi
+
     if [[ "$1" == "-b" && -n "$2" ]]; then
         branch_name=$2
         request_url="$request_url/tree/$branch_name"
