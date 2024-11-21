@@ -2,6 +2,11 @@ function repo() {
     repo_url=$(git config --get remote.origin.url)
     request_url=""
 
+    if ! command -v git &> /dev/null; then
+        echo "Error: Git is not installed."
+        return 1
+    fi
+
     if [[ $repo_url == "https://"* ]]; then
         $request_url=$repo_url
     else
