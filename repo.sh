@@ -17,7 +17,19 @@ function repo() {
 
     if [[ "$1" == "-u" && -n "$2" ]]; then
         username=$2
-        request_url="https://github.com/search?q=${username}&type=users";
+
+        if [[ "$3" == "-r" && -n "$4" ]]; then
+            repository_name=$4
+
+            if [[ "$5" == "-b" && -n "$6" ]]; then
+                branch_name=$6
+                request_url="https://github.com/$username/$repository_name/tree/$branch_name";
+            else
+                request_url="https://github.com/$username/$repository_name";
+            fi
+        else
+            request_url="https://github.com/search?q=${username}&type=users";
+        fi
     fi
 
     if [[ "$1" == "-r" && -n "$2" ]]; then
