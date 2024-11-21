@@ -6,7 +6,7 @@ function repo() {
         $request_url=$repo_url
     else
         username=$(echo $repo_url | awk -F 'git@github.com:|/' '{print $2}')
-        repo_name=$(echo $repo_url | awk -F '${username}|/' '{print $2}')
+        repo_name=$(echo $repo_url | awk -F '${username}|/' '{print $2}' | sed 's/\.git$//')
         request_url="https://github.com/$username/$repo_name"
     fi
 
