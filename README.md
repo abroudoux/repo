@@ -1,10 +1,32 @@
 # repo
 
-Bash Utility to Browse Easily Git Repositories
+📁 Browse Github from commands
 
-## 💻 ・ Usage
+Version : 1.0.0 (WIP)
 
-`repo` allows you to open Github Repositories in your browser
+## 🚀 Installation
+
+### Via Homebrew
+
+Wip 🚧
+
+### Manual
+
+You can copy the function in your shell's RC file. Alternatively, You can create a separate Bash script file and copy `pm.sh` into it. You'll need to load it at the beginning of your shell RC file (e.g., `.bashrc`, `.zshrc`, etc.).
+
+```bash
+source path/to/your/script.sh
+```
+
+Don't forget to resource your shell RC file:
+
+```bash
+source ~/.zshrc
+```
+
+## 💻 Usage
+
+`repo` allows you to browser Github Repositories from commands
 
 ```bash
 # Opens a new browser window with your GitHub repository
@@ -32,7 +54,7 @@ You can also combine flags
 repo -u abroudoux -r repo -b main
 ```
 
-## 🧑‍🤝‍🧑 ・ Contributing
+## 🧑‍🤝‍🧑 Contributing
 
 To contribute, fork the repository and open a pull request with the details of your changes.
 
@@ -44,6 +66,11 @@ Create a branch with a [conventionnal name](https://tilburgsciencehub.com/buildi
 - hotfix `hotfix/oh-my-god-bro`
 - wip `wip/the-work-name-in-progress`
 
-## 📑 ・ License
+## 📌 Roadmap
+
+- [ ] Refactor code
+- [ ] Open repository in active browser window
+
+## 📑 License
 
 This project is under MIT license. For more information, please see the file [LICENSE](./LICENSE).
