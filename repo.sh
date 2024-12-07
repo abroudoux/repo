@@ -15,36 +15,62 @@ function repo() {
         request_url="https://github.com/$username/$repo_name"
     fi
 
-    if [[ "$1" ]]; then
-        request_url="https://github.com/$1"
-    fi
-
-    if [[ "$1" == "-b" && -n "$2" ]]; then
-        branch_name=$2
-        request_url="$request_url/tree/$branch_name"
-    fi
-
-    if [[ "$1" == "-u" && -n "$2" ]]; then
-        username=$2
-
-        if [[ "$3" == "-r" && -n "$4" ]]; then
-            repository_name=$4
-
-            if [[ "$5" == "-b" && -n "$6" ]]; then
-                branch_name=$6
-                request_url="https://github.com/$username/$repository_name/tree/$branch_name";
-            else
-                request_url="https://github.com/$username/$repository_name";
-            fi
-        else
-            request_url="https://github.com/search?q=${username}&type=users";
-        fi
-    fi
-
-    if [[ "$1" == "-r" && -n "$2" ]]; then
-        repository_name=$2
-        request_url="https://github.com/search?q=${repository_name}&type=repositories";
-    fi
+    while [[ $# -gt 0 ]]; do
+        case "$1" in
+            --branch|-b)
+                if [[ -n "$2" ]]; then
+                    request_url="$request_url/tree/$2"
+                    return
+                else
+                    echo "Error: --branch requires a value." >&2
+                    return 1
+                fi
+                ;;
+            --repository|-r)
+                if [[ -n "$2" ]]; then
+                    request_url="https://github.com/search?q=$2&type=repositories"
+                    return
+                else
+                    echo "Error: --repository requires a value." >&2
+                    return 1
+                fi
+                ;;
+            --user|-u)
+                if [[ -n "$2" ]]; then
+                    request_url="https://github.com/search?q=$2&type=users"
+                    return
+                else
+                    echo "Error: --user requires a value." >&2
+                    return 1
+                fi
+                ;;
+            --link|-l)
+                request_url="https://github.com/$1"
+                return
+                ;;
+            --version|-v)
+                version=$(jq -r '.version' ./package.json) 
+                echo "$version"
+                return
+                ;;
+            --help|-h)
+                echo "Usage: repo [options] [command]"
+                echo "Options:"
+                echo "  --branch, -b          Open the current repository with the specified branch"
+                echo "  --repository, -r      Search for a repository"
+                echo "  --user, -u            Search for a user"
+                echo "  --link, -l            Open the repository link in the browser"
+                echo "  --help, -h            Show this help message"
+                return
+                ;;
+            *)
+                echo "Unknown option: $1" >&2
+                echo "Use --help or -h for usage information."
+                return 1
+                ;;
+        esac
+        shift
+    done
 
     os_type=$(uname)
 

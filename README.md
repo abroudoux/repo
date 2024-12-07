@@ -2,7 +2,7 @@
 
 📁 Browse Github from commands
 
-Version : 1.0.0 (WIP)
+Version : 1.0.0
 
 ## 🚀 Installation
 
@@ -33,25 +33,18 @@ source ~/.zshrc
 repo
 ```
 
-You can search any github repository
-If you add `$username/$repository`, repo will open a new browser window with the specified repository
-
-```bash
-repo abroudoux/repo
-```
-
 Multiple tags are existing
 
 ```bash
 repo -u abroudoux # Searches for a user
 repo -r repo # Searches for a repository
-repo -b main # Requires a repository reference and searches for an associated branch
+repo -b main # Open the current repository with the specified branch
 ```
 
-You can also combine flags
+You can search for a repository by using the `--link` / `-l` flag.
 
 ```bash
-repo -u abroudoux -r repo -b main
+repo https://github.com/abroudoux/repo
 ```
 
 ## 🧑‍🤝‍🧑 Contributing
