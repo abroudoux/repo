@@ -2,7 +2,7 @@
 
 📁 Browse Github from commands
 
-Version : 1.0.0
+Version : 2.0.0
 
 ## 🚀 Installation
 
@@ -12,39 +12,38 @@ Wip 🚧
 
 ### Manual
 
-You can copy the function in your shell's RC file. Alternatively, You can create a separate Bash script file and copy `pm.sh` into it. You'll need to load it at the beginning of your shell RC file (e.g., `.bashrc`, `.zshrc`, etc.).
+You can paste the binary in your `bin` directory (e.g., on mac it's `/usr/bin/local`). \
+Don't forget to grant execution permissions to the binary.
 
 ```bash
-source path/to/your/script.sh
-```
-
-Don't forget to resource your shell RC file:
-
-```bash
-source ~/.zshrc
+chmox +x repo
 ```
 
 ## 💻 Usage
 
-`repo` allows you to browser Github Repositories from commands
+`repo` allows you to browser Github Repositories from commands.
 
 ```bash
-# Opens a new browser window with your GitHub repository
+# Opens a new browser window with your current GitHub repository
 repo
 ```
 
-Multiple tags are existing
+Use the `--branch` / `-b` flag to open the current Gihtub repository with the specified branch.
 
 ```bash
-repo -u abroudoux # Searches for a user
-repo -r repo # Searches for a repository
-repo -b main # Open the current repository with the specified branch
+repo --branch develop
 ```
 
 You can search for a repository by using the `--link` / `-l` flag.
 
 ```bash
 repo https://github.com/abroudoux/repo
+```
+
+If you don't have the URl, use the `--search` / `-s` flag to make a research.
+
+```bash
+repo --search repo
 ```
 
 ## 🧑‍🤝‍🧑 Contributing
@@ -61,8 +60,11 @@ Create a branch with a [conventionnal name](https://tilburgsciencehub.com/buildi
 
 ## 📌 Roadmap
 
-- [ ] Refactor code
+- [x] Refactor code in Go
 - [ ] Open repository in active browser window
+- [ ] Add more option to browser repositories from commands
+- [ ] Open specified menus of the specified repository (e.g., Pull Requests, Issues...)
+- [ ] Window supports
 
 ## 📑 License
 
