@@ -1,17 +1,26 @@
 package main
 
 import (
+	_ "embed"
 	"fmt"
 	"os"
 	"os/exec"
 	"strings"
 )
 
+//go:embed assets/ascii.txt
+var asciiArt string
+
 func main() {
 	repositoryUrl, err := getRepositoryUrl()
 	if err != nil {
 		fmt.Println(err)
 		os.Exit(1)
+	}
+
+	if len(os.Args) > 1 {
+		flagMode(repositoryUrl)
+		os.Exit(0)
 	}
 
 	if (isHttpsUrl(repositoryUrl)) {
@@ -90,8 +99,8 @@ func createHttpsUrl(repositoryUrl string) (string, error) {
 	}
 
 	host := strings.TrimPrefix(parts[0], "git@")
-	path := strings.TrimSuffix(parts[1], ".git")
-
+	path := strings.TrimSpace(parts[1])
+	path = strings.TrimSuffix(path, ".git")
 	httpsURL := fmt.Sprintf("https://%s/%s", host, path)
 	return httpsURL, nil
 }
@@ -148,4 +157,53 @@ func openLinkDarwin(url string) error {
 	}
 
 	return nil
+}
+
+func openRepositoryWithBranch(repositoryUrl string, branch string) error {
+	httpsUrl, err := createHttpsUrl(repositoryUrl)
+	if err != nil {
+		return fmt.Errorf("error opening repository with branch: %v", err)
+	}
+
+	httpsUrl = strings.TrimSpace(httpsUrl)
+	branch = strings.TrimSpace(branch)
+	httpsUrlWithBranch := fmt.Sprintf("%s/tree/%s", httpsUrl, branch)
+	err = openHttpsUrlInBrowser(httpsUrlWithBranch)
+	if err != nil {
+		return fmt.Errorf("error opening repository with branch: %v", err)
+	}
+
+	return nil
+}
+
+func flagMode(repositoryUrl string) {
+	flag := os.Args[1]
+
+	if flag == "--branch" || flag == "-b" {
+		branch := os.Args[2]
+		err := openRepositoryWithBranch(repositoryUrl, branch)
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
+	} else if flag == "--link" || flag == "-l" {
+		err := openHttpsUrlInBrowser(repositoryUrl)
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
+	} else if flag == "--version" || flag == "-v" {
+		println(asciiArt)
+		println("2.0.0")
+	} else if flag == "--help" || flag == "-h" {
+		printHelpManual()
+	}
+}
+
+func printHelpManual() {
+	fmt.Println("Usage: repo [options] [command]")
+	fmt.Printf("  %-20s %s\n", "repo [--branch | -b]", "Open the current repository with the specified branch")
+	fmt.Printf("  %-20s %s\n", "repo [--repo | -r]", "Search for a repository")
+	fmt.Printf("  %-20s %s\n", "repo [--link | -l]", "Open the repository link in the browser")
+	fmt.Printf("  %-20s %s\n", "commit [--help | -h]", "Show this help message")
 }
