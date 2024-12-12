@@ -176,12 +176,29 @@ func openRepositoryWithBranch(repositoryUrl string, branch string) error {
 	return nil
 }
 
+func searchRepository(repositoryName string) error {
+	searchUrl := fmt.Sprintf("https://github.com/search?q=%s&type=repositories", repositoryName)
+	err := openHttpsUrlInBrowser(searchUrl)
+	if err != nil {
+		return fmt.Errorf("error searching repository: %v", err)
+	}
+
+	return nil
+}
+
 func flagMode(repositoryUrl string) {
 	flag := os.Args[1]
 
 	if flag == "--branch" || flag == "-b" {
 		branch := os.Args[2]
 		err := openRepositoryWithBranch(repositoryUrl, branch)
+		if err != nil {
+			fmt.Println(err)
+			os.Exit(1)
+		}
+	} else if flag == "--search" || flag == "-s" {
+		repositoryName := os.Args[2]
+		err := searchRepository(repositoryName)
 		if err != nil {
 			fmt.Println(err)
 			os.Exit(1)
@@ -203,7 +220,7 @@ func flagMode(repositoryUrl string) {
 func printHelpManual() {
 	fmt.Println("Usage: repo [options] [command]")
 	fmt.Printf("  %-20s %s\n", "repo [--branch | -b]", "Open the current repository with the specified branch")
-	fmt.Printf("  %-20s %s\n", "repo [--repo | -r]", "Search for a repository")
+	fmt.Printf("  %-20s %s\n", "repo [--search | -s]", "Search for a repository")
 	fmt.Printf("  %-20s %s\n", "repo [--link | -l]", "Open the repository link in the browser")
 	fmt.Printf("  %-20s %s\n", "commit [--help | -h]", "Show this help message")
 }
