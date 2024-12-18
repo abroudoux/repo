@@ -1,6 +1,6 @@
 # repo
 
-📁 Browse Github from commands
+🌸 Browse Github from commands
 
 Version : 2.0.0
 
